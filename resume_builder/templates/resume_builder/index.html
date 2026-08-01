@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="رزومه حرفه‌ای خود را در مرورگر بسازید، شخصی‌سازی کنید و به PDF خروجی بگیرید.">
+    <meta property="og:title" content="رزومه‌ساز | ساخت رزومه حرفه‌ای">
+    <meta property="og:description" content="رزومه حرفه‌ای خود را در مرورگر بسازید و به PDF خروجی بگیرید.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{% static 'resume_builder/images/og.png' %}">
+    <title>رزومه‌ساز | ساخت رزومه حرفه‌ای</title>
+    <link rel="stylesheet" href="{% static 'resume_builder/css/app.css' %}">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <a class="brand" href="#top" aria-label="رزومه‌ساز، صفحه اصلی">
+          <span class="brand-mark">ر</span>
+          <span><strong>رزومه‌ساز</strong><small>ساده، حرفه‌ای، خصوصی</small></span>
+        </a>
+        <div class="header-actions">
+          <span class="save-state"><i></i>ذخیره خودکار</span>
+          <button id="export-button" class="button button-ghost" type="button">دریافت پشتیبان</button>
+          <button id="import-button" class="button button-ghost" type="button">بازیابی</button>
+          <input id="import-file" type="file" accept="application/json" hidden>
+          <button id="print-button" data-testid="print-button" class="button button-primary" type="button">دریافت PDF</button>
+        </div>
+      </header>
+
+      <div class="workspace" id="top">
+        <aside class="editor-panel">
+          <div class="editor-heading">
+            <div><small>ویرایش رزومه</small><h1 id="editor-title">رزومه بدون نام</h1></div>
+            <span id="tab-progress">۱ / ۶</span>
+          </div>
+          <nav id="editor-tabs" class="editor-tabs" aria-label="بخش‌های رزومه"></nav>
+          <div id="editor-content" class="editor-scroll"></div>
+        </aside>
+
+        <section class="preview-panel" aria-label="پیش‌نمایش رزومه">
+          <div class="preview-toolbar">
+            <span><i></i>پیش‌نمایش زنده</span>
+            <small>A4</small>
+          </div>
+          <div class="paper-stage">
+            <article id="resume-sheet" data-testid="resume-sheet" class="resume-sheet"></article>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="{% static 'resume_builder/js/app.js' %}"></script>
+  </body>
+</html>

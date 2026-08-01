@@ -971,18 +971,6 @@ a {
   margin-bottom: 3.2mm;
 }
 
-.visually-hidden {
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 :focus-visible {
   outline: 3px solid rgb(23 107 91 / 28%);
   outline-offset: 2px;
