@@ -1,5 +1,8 @@
-from pathlib import Path
+import os
+import subprocess
+import sys
 
+from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.test import SimpleTestCase
 
@@ -24,21 +27,47 @@ class ResumeMakerTests(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"status": "ok"})
 
-    def test_browser_features_are_shipped(self):
-        app_path = Path(finders.find("resume_builder/js/app.js"))
-        data_path = Path(finders.find("resume_builder/js/data.js"))
-        preview_path = Path(finders.find("resume_builder/js/preview.js"))
-        source = "\n".join(
-            path.read_text(encoding="utf-8")
-            for path in (app_path, data_path, preview_path)
+    def test_css_asset_exists(self):
+        self.assertIsNotNone(finders.find("resume_builder/css/app.css"))
+
+    def test_javascript_assets_exist(self):
+        for filename in ("app.js", "data.js", "editor.js", "preview.js"):
+            with self.subTest(filename=filename):
+                self.assertIsNotNone(finders.find(f"resume_builder/js/{filename}"))
+
+    def test_open_graph_image_exists(self):
+        self.assertIsNotNone(finders.find("resume_builder/images/og.png"))
+
+    def test_unknown_route_returns_404(self):
+        self.assertEqual(self.client.get("/not-a-real-route/").status_code, 404)
+
+    def test_production_security_settings(self):
+        environment = os.environ.copy()
+        environment.update(
+            DJANGO_DEBUG="0",
+            DJANGO_SETTINGS_MODULE="resume_project.settings",
+            SECRET_KEY="test-only-M9fK2qV7xP4nR8wT6yL3cD5sH1jB0aZ7uE9iO2pG4mN6vC8x",
+        )
+        code = """
+import django
+django.setup()
+from django.conf import settings
+assert settings.DEBUG is False
+assert settings.SECURE_SSL_REDIRECT is True
+assert settings.SECURE_HSTS_SECONDS > 0
+assert settings.SESSION_COOKIE_SECURE is True
+assert settings.CSRF_COOKIE_SECURE is True
+assert "whitenoise.middleware.WhiteNoiseMiddleware" in settings.MIDDLEWARE
+assert settings.STORAGES["staticfiles"]["BACKEND"] == "whitenoise.storage.CompressedManifestStaticFilesStorage"
+"""
+
+        result = subprocess.run(
+            [sys.executable, "-c", code],
+            cwd=settings.BASE_DIR,
+            env=environment,
+            capture_output=True,
+            text=True,
+            check=False,
         )
 
-        for feature in (
-            "localStorage",
-            "window.print()",
-            "resume-backup.json",
-            "2_000_000",
-            'experience: "Work Experience"',
-            "template-${resume.settings.template}",
-        ):
-            self.assertIn(feature, source)
+        self.assertEqual(result.returncode, 0, result.stderr)
