@@ -1,5 +1,7 @@
 # رزومه‌ساز | Resume Maker
 
+[![CI](https://github.com/Esmaeelnezhad/Resume-Maker/actions/workflows/ci.yml/badge.svg)](https://github.com/Esmaeelnezhad/Resume-Maker/actions/workflows/ci.yml)
+
 رزومه‌ساز یک پروژه Django رایگان، دوزبانه و حریم‌خصوصی‌محور برای ساخت رزومه حرفه‌ای در مرورگر است. اطلاعات کاربر از دستگاه خارج نمی‌شود و نتیجه با یک کلیک به PDF استاندارد A4 تبدیل می‌شود.
 
 ![نمایش ویرایش زنده و دریافت PDF](docs/media/live-edit.gif)
@@ -61,3 +63,7 @@ python manage.py test
 ## فناوری‌ها
 
 Python، Django، JavaScript، HTML، CSS، WhiteNoise و Gunicorn؛ بدون دیتابیس، حساب کاربری یا کتابخانه رابط کاربری اضافی.
+
+## مجوز
+
+این پروژه با مجوز [MIT](LICENSE) منتشر شده است.
