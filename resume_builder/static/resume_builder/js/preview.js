@@ -1,4 +1,4 @@
-import { escapeHtml, labels, lines, safePhoto, safeUrl } from "./data.js";
+import { escapeHtml, labels, lines, resolveTheme, safePhoto, safeUrl } from "./data.js";
 
 
 const joinText = (values) => values.filter(Boolean).map(escapeHtml).join(" · ");
@@ -72,12 +72,18 @@ export function renderPreview(article, resume) {
   const language = resume.settings.language;
   const copy = labels[language];
   const photo = safePhoto(resume.basics.photo);
-  const accent = /^#[0-9a-f]{6}$/i.test(resume.settings.accent) ? resume.settings.accent : "#176b5b";
+  const bundle = resolveTheme(resume.settings.theme);
+  const accent = /^#[0-9a-f]{6}$/i.test(resume.settings.accent) ? resume.settings.accent : bundle.accent;
 
   article.className = `resume-sheet template-${resume.settings.template} font-${resume.settings.font} density-${resume.settings.density}`;
   article.dir = resume.settings.direction;
   article.lang = language;
+  article.dataset.theme = resume.settings.theme;
   article.style.setProperty("--accent", accent);
+  article.style.setProperty("--theme-accent", bundle.accent);
+  article.style.setProperty("--theme-canvas", bundle.canvas);
+  article.style.setProperty("--theme-panel", bundle.panel);
+  article.style.setProperty("--theme-ink", bundle.ink);
   article.innerHTML = `
     <header class="resume-header">
       ${photo ? `<img class="resume-photo" src="${photo}" alt="">` : ""}

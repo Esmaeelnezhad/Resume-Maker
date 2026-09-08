@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 from django.conf import settings
 from django.contrib.staticfiles import finders
@@ -34,6 +35,19 @@ class ResumeMakerTests(SimpleTestCase):
         for filename in ("app.js", "data.js", "editor.js", "preview.js"):
             with self.subTest(filename=filename):
                 self.assertIsNotNone(finders.find(f"resume_builder/js/{filename}"))
+
+    def test_data_js_exposes_theme_registry(self):
+        # Each shipped theme must be declared in the data module so the
+        # front-end picker can render every option.
+        data_js = Path(finders.find("resume_builder/js/data.js")).read_text()
+        for theme in ("emerald", "sapphire", "sunset", "minimal"):
+            with self.subTest(theme=theme):
+                self.assertIn(f"{theme}:", data_js)
+
+    def test_minimal_template_stylesheet_available(self):
+        css = Path(finders.find("resume_builder/css/app.css")).read_text()
+        self.assertIn(".template-minimal", css)
+        self.assertIn(".theme-thumb", css)
 
     def test_open_graph_image_exists(self):
         self.assertIsNotNone(finders.find("resume_builder/images/og.png"))

@@ -1,4 +1,4 @@
-import { createItem, freshSample, normalizeResume, STORAGE_KEY } from "./data.js";
+import { createItem, freshSample, normalizeResume, resolveTheme, STORAGE_KEY } from "./data.js";
 import { renderEditor, renderTabs, tabs } from "./editor.js";
 import { renderPreview } from "./preview.js";
 
@@ -113,6 +113,15 @@ elements.editor.addEventListener("click", (event) => {
     resume[list].push(createItem(list));
   } else if (action === "remove" && Array.isArray(resume[list])) {
     resume[list] = resume[list].filter((item) => item.id !== id);
+  } else if (action === "setting" && setting === "theme") {
+    // Apply the entire coordinated bundle so accent/font/density/template
+    // move in lockstep. Users can still override any of them afterwards.
+    const bundle = resolveTheme(value);
+    resume.settings.theme = value;
+    resume.settings.accent = bundle.accent;
+    resume.settings.font = bundle.font;
+    resume.settings.density = bundle.density;
+    resume.settings.template = bundle.template;
   } else if (action === "setting") {
     resume.settings[setting] = value;
   } else if (action === "remove-photo") {

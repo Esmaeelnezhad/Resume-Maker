@@ -1,5 +1,60 @@
 export const STORAGE_KEY = "resume-maker-v1";
 
+// Coordinated visual bundles. Each theme overrides accent/font/density/template
+// in one click, while individual settings remain user-editable afterwards.
+export const themes = {
+  emerald: {
+    label: "زمردی",
+    description: "پیش‌فرض، حرفه‌ای و آرام",
+    accent: "#176b5b",
+    canvas: "#edf0ed",
+    panel: "#ffffff",
+    ink: "#19211d",
+    font: "sans",
+    density: "comfortable",
+    template: "modern",
+  },
+  sapphire: {
+    label: "یاقوت کبود",
+    description: "آبی حرفه‌ای برای نقش‌های فنی",
+    accent: "#2457a7",
+    canvas: "#eef2f8",
+    panel: "#ffffff",
+    ink: "#15203a",
+    font: "sans",
+    density: "comfortable",
+    template: "modern",
+  },
+  sunset: {
+    label: "غروب",
+    description: "گرم و پویا برای نقش‌های خلاق",
+    accent: "#c25b1e",
+    canvas: "#fbeee5",
+    panel: "#fffaf5",
+    ink: "#2c1d12",
+    font: "sans",
+    density: "comfortable",
+    template: "modern",
+  },
+  minimal: {
+    label: "مینیمال",
+    description: "سیاه و سفید، تک‌ستون، تایپوگرافی‌محور",
+    accent: "#1a1a1a",
+    canvas: "#f4f4f4",
+    panel: "#ffffff",
+    ink: "#1a1a1a",
+    font: "serif",
+    density: "comfortable",
+    template: "minimal",
+  },
+};
+
+export const DEFAULT_THEME = "emerald";
+
+export function resolveTheme(key) {
+  return themes[key] ?? themes[DEFAULT_THEME];
+}
+
 export const labels = {
   fa: {
     contact: "تماس",
@@ -108,6 +163,7 @@ export const sampleResume = {
     { id: "sample-language-2", name: "انگلیسی", level: "حرفه‌ای" },
   ],
   settings: {
+    theme: "emerald",
     accent: "#176b5b",
     direction: "rtl",
     template: "modern",
@@ -127,8 +183,9 @@ const schemas = {
 };
 
 const allowedSettings = {
+  theme: Object.keys(themes),
   direction: ["rtl", "ltr"],
-  template: ["modern", "classic"],
+  template: ["modern", "classic", "minimal"],
   font: ["sans", "serif", "mono"],
   density: ["comfortable", "compact"],
   language: ["fa", "en"],
@@ -162,6 +219,8 @@ export function normalizeResume(value = {}) {
   for (const [key, values] of Object.entries(allowedSettings)) {
     if (values.includes(sourceSettings[key])) settings[key] = sourceSettings[key];
   }
+  // Legacy payloads (pre-themes) have no theme field — treat as the default bundle.
+  if (!settings.theme) settings.theme = DEFAULT_THEME;
   if (/^#[0-9a-f]{6}$/i.test(sourceSettings.accent ?? "")) settings.accent = sourceSettings.accent;
 
   return {

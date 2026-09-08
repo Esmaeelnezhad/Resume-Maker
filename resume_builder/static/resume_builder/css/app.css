@@ -552,6 +552,66 @@ a {
   box-shadow: 0 11px #d9dedb, 0 22px #d9dedb;
 }
 
+.minimal-thumb i {
+  top: 18px;
+  left: 14%;
+  right: 14%;
+  height: 4px;
+  background: var(--ink, #1a1a1a);
+}
+
+.minimal-thumb b {
+  top: 30px;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  box-shadow: 0 8px #cfd3cf, 0 16px #cfd3cf, 0 24px #cfd3cf, 0 32px #cfd3cf;
+}
+
+.theme-option {
+  align-items: stretch;
+  text-align: start;
+  gap: 10px;
+  padding: 9px 9px 11px;
+}
+
+.theme-option .theme-meta {
+  display: grid;
+  gap: 2px;
+  color: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.theme-option .theme-meta small {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.theme-thumb {
+  background: var(--thumb-canvas, #edf0ed);
+}
+
+.theme-thumb i {
+  inset: 0 0 auto 0;
+  height: 14px;
+  background: var(--thumb-accent, #176b5b);
+}
+
+.theme-thumb b {
+  top: 26px;
+  left: 14%;
+  right: 14%;
+  height: 3px;
+  background: color-mix(in srgb, var(--thumb-accent, #176b5b) 30%, white);
+  box-shadow: 0 9px color-mix(in srgb, var(--thumb-accent, #176b5b) 22%, white),
+    0 18px color-mix(in srgb, var(--thumb-accent, #176b5b) 16%, white),
+    0 27px color-mix(in srgb, var(--thumb-accent, #176b5b) 10%, white);
+}
+
 .color-options {
   display: flex;
   gap: 10px;
@@ -945,6 +1005,74 @@ a {
 
 .template-classic .resume-block {
   margin-bottom: 6mm;
+}
+
+.template-minimal {
+  padding: 16mm 18mm 18mm;
+}
+
+.template-minimal .resume-header {
+  min-height: auto;
+  padding: 0 0 7mm;
+  justify-content: flex-start;
+  gap: 6mm;
+  color: var(--ink, #202621);
+  background: #fff;
+  border-bottom: 0.5mm solid color-mix(in srgb, var(--accent) 60%, white);
+}
+
+.template-minimal .resume-photo {
+  width: 22mm;
+  height: 22mm;
+  border-color: color-mix(in srgb, var(--accent) 30%, white);
+}
+
+.template-minimal .resume-identity h1 {
+  font-size: 26px;
+  letter-spacing: -0.2px;
+}
+
+.template-minimal .resume-identity p {
+  color: color-mix(in srgb, var(--accent) 75%, #303a34);
+}
+
+.template-minimal .resume-layout {
+  display: block;
+}
+
+.template-minimal .resume-sidebar {
+  min-height: auto;
+  padding: 0;
+  background: #fff;
+  border-bottom: 0.3mm solid #e3e6e2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7mm;
+  margin-bottom: 8mm;
+  padding-bottom: 6mm;
+}
+
+.template-minimal .resume-sidebar .resume-block {
+  margin-bottom: 0;
+}
+
+.template-minimal .resume-sidebar .resume-block > h2 {
+  font-size: 10.5px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.template-minimal .resume-main {
+  padding: 0;
+}
+
+.template-minimal .resume-block {
+  margin-bottom: 9mm;
+}
+
+.template-minimal .resume-entry {
+  border-inline-start: 0;
+  padding-inline-start: 0;
 }
 
 .density-compact {
