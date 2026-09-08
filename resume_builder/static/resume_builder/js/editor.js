@@ -1,4 +1,4 @@
-import { escapeHtml, safePhoto } from "./data.js";
+import { escapeHtml, safePhoto, themes } from "./data.js";
 
 
 export const tabs = [
@@ -165,14 +165,24 @@ function selectField(label, setting, value, options, testId = "") {
 
 function designSection(resume) {
   const colors = ["#176b5b", "#2457a7", "#7a3e65", "#9a4d20", "#2f3b52"];
+  const themeButtons = Object.entries(themes).map(([key, theme]) => `
+          <button data-testid="theme-${key}" type="button" class="template-option theme-option ${resume.settings.theme === key ? "active" : ""}" data-action="setting" data-setting="theme" data-value="${key}" aria-label="${escapeHtml(theme.label)} - ${escapeHtml(theme.description)}">
+            <span class="template-thumb theme-thumb theme-${key}-thumb" style="--thumb-accent:${theme.accent};--thumb-canvas:${theme.canvas};"><i></i><b></b></span>
+            <span class="theme-meta"><strong>${escapeHtml(theme.label)}</strong><small>${escapeHtml(theme.description)}</small></span>
+          </button>`).join("");
   return `
     <section class="editor-section">
       <h2>ظاهر رزومه</h2>
+      <div class="design-group">
+        <span class="design-label">تم هماهنگ</span>
+        <div class="option-grid theme-grid">${themeButtons}</div>
+      </div>
       <div class="design-group">
         <span class="design-label">قالب</span>
         <div class="option-grid">
           <button data-testid="template-modern" type="button" class="template-option ${resume.settings.template === "modern" ? "active" : ""}" data-action="setting" data-setting="template" data-value="modern"><span class="template-thumb modern-thumb"><i></i><b></b></span>مدرن</button>
           <button data-testid="template-classic" type="button" class="template-option ${resume.settings.template === "classic" ? "active" : ""}" data-action="setting" data-setting="template" data-value="classic"><span class="template-thumb classic-thumb"><i></i><b></b></span>کلاسیک</button>
+          <button data-testid="template-minimal" type="button" class="template-option ${resume.settings.template === "minimal" ? "active" : ""}" data-action="setting" data-setting="template" data-value="minimal"><span class="template-thumb minimal-thumb"><i></i><b></b></span>مینیمال</button>
         </div>
       </div>
       <div class="design-group">
